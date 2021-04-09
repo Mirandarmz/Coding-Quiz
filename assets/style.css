@@ -23,6 +23,7 @@ h1 {
     padding: 180px;
     text-align: center;
     align-items: center;
+    position: relative;
 }
 
 #contentBox p{
@@ -45,7 +46,14 @@ button {
     display: inline-block;
     font-size: 16px;
     font-family: 'Courier Prime', monospace;
-  }
+}
+
+#hsButton{
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: start;
+}
 
 input {
     width: 20%;

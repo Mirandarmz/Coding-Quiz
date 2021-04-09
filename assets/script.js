@@ -13,6 +13,7 @@ var highscoresList = document.getElementById("highscoresList");
 var highscoresSection = document.getElementById("highscores");
 var clear = document.getElementById("clear");
 var playAgain = document.getElementById("playAgain");
+var hsButton = document.getElementById("hsButton");
 
 answer1b.style.display = "none";
 answer2b.style.display = "none";
@@ -80,27 +81,27 @@ function start() {
 
 var timerInterval;
 
-function checkAnswer(i,aux,timerInterval){
-    if (answers[i * 4 + aux]== 1) {
-        score++;
-        feedback.textContent = "Correct!";
-      } else {
-        secondsLeft = secondsLeft - 10;
-        feedback.textContent = "Incorrect!";
-      }
-      i++;
-      if (i == questions.length) {
-        clearInterval(timerInterval);
-        endQuiz();
-        return;
-      } else {
-        question.textContent = questions[i];
-        answer1b.textContent = options[i * 4];
-        answer2b.textContent = options[i * 4 + 1];
-        answer3b.textContent = options[i * 4 + 2];
-        answer4b.textContent = options[i * 4 + 3];
-      }
-      return i;
+function checkAnswer(i, aux, timerInterval) {
+  if (answers[i * 4 + aux] == 1) {
+    score++;
+    feedback.textContent = "Correct!";
+  } else {
+    secondsLeft = secondsLeft - 10;
+    feedback.textContent = "Incorrect!";
+  }
+  i++;
+  if (i == questions.length) {
+    clearInterval(timerInterval);
+    endQuiz();
+    return;
+  } else {
+    question.textContent = questions[i];
+    answer1b.textContent = options[i * 4];
+    answer2b.textContent = options[i * 4 + 1];
+    answer3b.textContent = options[i * 4 + 2];
+    answer4b.textContent = options[i * 4 + 3];
+  }
+  return i;
 }
 
 function quiz() {
@@ -120,24 +121,20 @@ function quiz() {
   var i = 0;
 
   answer1b.addEventListener("click", function () {
-      console.log(i);
-    i=checkAnswer(i,0,timerInterval);
-    console.log(i);
+    i = checkAnswer(i, 0, timerInterval);
   });
 
   answer2b.addEventListener("click", function () {
-      console.log(i);
-    i=checkAnswer(i,1,timerInterval);
-    console.log(i);
+    i = checkAnswer(i, 1, timerInterval);
   });
 
   answer3b.addEventListener("click", function () {
-    i=checkAnswer(i,2,timerInterval);
+    i = checkAnswer(i, 2, timerInterval);
   });
 
   answer4b.addEventListener("click", function () {
-    i=checkAnswer(i,3,timerInterval);
-});
+    i = checkAnswer(i, 3, timerInterval);
+  });
 }
 
 function endQuiz() {
@@ -216,3 +213,18 @@ clear.addEventListener("click", function () {
 playAgain.addEventListener("click", function () {
   location.reload();
 });
+
+hsButton.addEventListener("click",function(){
+    content.textContent="";
+    startButton.style.display="none";
+    question.textContent="";
+    timer.textContent = "";
+    answer1b.style.display = "none";
+    answer2b.style.display = "none";
+    answer3b.style.display = "none";
+    answer4b.style.display = "none";
+    highscoresSection.style.display = "inline-block";
+    timer.style.display="none";
+
+})
+
