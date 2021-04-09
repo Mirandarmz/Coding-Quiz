@@ -11,6 +11,8 @@ var initialsText = document.getElementById("initials");
 var sumbit = document.getElementById("submit");
 var highscoresList = document.getElementById("highscoresList");
 var highscoresSection = document.getElementById("highscores");
+var clear = document.getElementById("clear");
+var playAgain = document.getElementById("playAgain");
 
 answer1b.style.display="none";
 answer2b.style.display="none";
@@ -78,16 +80,16 @@ function quiz(){
             feedback.textContent="Incorrect!";
         }
         if(secondsLeft <= 0) {
-            // Stops execution of action at set interval
             content.textContent="Time's up!";
             clearInterval(timerInterval);
-            // Calls function end game
             endQuiz();
+            return;
         }
         i++;
         if(i==questions.length){
             clearInterval(timerInterval);
             endQuiz();
+            return;
         }else{
             question.textContent=questions[i];
             answer1b.textContent=options[i*4];
@@ -98,7 +100,6 @@ function quiz(){
     })
 
     answer2b.addEventListener("click",function(){
-        clickedAnswers=[false,true,false,false];
         if(answers[(i*4)+1]==1){
             score++;
             feedback.textContent="Correct!";
@@ -112,11 +113,13 @@ function quiz(){
             content.textContent="Time's up!";
             // Calls function end game
             endQuiz();
+            return;
         }
         i++;
         if(i==questions.length){
             clearInterval(timerInterval);
             endQuiz();
+            return;
         }else{
             question.textContent=questions[i];
             answer1b.textContent=options[i*4];
@@ -127,7 +130,6 @@ function quiz(){
     })
 
     answer3b.addEventListener("click",function(){
-        clickedAnswers=[false,false,true,false];
         if(answers[(i*4)+2]==1){
             score++;
             feedback.textContent="Correct!";
@@ -141,11 +143,13 @@ function quiz(){
             clearInterval(timerInterval);
             // Calls function end game
             endQuiz();
+            return;
         }
         i++;
         if(i==questions.length){
             clearInterval(timerInterval);
             endQuiz();
+            return;
         }else{
             question.textContent=questions[i];
             answer1b.textContent=options[i*4];
@@ -156,7 +160,6 @@ function quiz(){
     })
 
     answer4b.addEventListener("click",function(){
-        clickedAnswers=[false,false,false,true];
         if(answers[(i*4)+3]==1){
             score++;
             feedback.textContent="Correct!";
@@ -170,11 +173,13 @@ function quiz(){
             clearInterval(timerInterval);
             // Calls function end game
             endQuiz();
+            return;
         }
         i++;
         if(i==questions.length){
             clearInterval(timerInterval);
             endQuiz();
+            return;
         }else{
             question.textContent=questions[i];
             answer1b.textContent=options[i*4];
@@ -185,6 +190,7 @@ function quiz(){
     })
 
 }
+
 
 
 function endQuiz(){
@@ -199,13 +205,13 @@ function endQuiz(){
     initialsText.textContent="Enter your initials";
     sumbit.style.display="inline";
     timer.textContent="";
+    highscoresSection.style.opacity="100%";
 }
 
 
 var highscores = [];
 
 function renderInitials() {
-
     highscoresList.innerHTML = ""; 
     
     highscores.sort( ({score:a}, {score:b}) => b-a );
@@ -214,7 +220,7 @@ function renderInitials() {
       var highscore = highscores[i];
       
       var li = document.createElement("li");
-      li.textContent = highscore.initials + " | " + highscore.score;
+      li.textContent = (i+1) + ". " + highscore.initials + " | " + highscore.score;
       li.setAttribute("data-index", i);
   
   
@@ -240,7 +246,6 @@ function init() {
 
 sumbit.addEventListener("click", function(event) {
     var scoreText = initialsText.value.trim();
-    highscoresSection.style.opacity="100%";
     
     var scores = {
         initials: scoreText,
@@ -259,6 +264,15 @@ sumbit.addEventListener("click", function(event) {
   renderInitials();
 });
 
-
-
 init();
+
+clear.addEventListener("click",function(){
+    localStorage.clear();
+    while(highscoresList.firstChild){
+        highscoresList.removeChild(highscoresList.firstChild);
+    }
+})
+
+playAgain.addEventListener("click",function(){
+    location.reload();
+})
