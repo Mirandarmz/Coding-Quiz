@@ -7,9 +7,10 @@ var answer2b = document.getElementById("answer2");
 var answer3b = document.getElementById("answer3");
 var answer4b = document.getElementById("answer4");
 var feedback = document.getElementById("feedback");
-var initials = document.getElementById("initials");
-var initialsText = document.getElementById("initialsText");
+var initialsText = document.getElementById("initials");
 var sumbit = document.getElementById("submit");
+var highscoresList = document.getElementById("highscoresList");
+var highscoresSection = document.getElementById("highscoresSections");
 
 answer1b.style.display="none";
 answer2b.style.display="none";
@@ -46,6 +47,8 @@ function start(){
     
     score=0;
 }
+ 
+var timerInterval;
 
 function quiz(){
     var timerInterval = setInterval(function() {
@@ -66,13 +69,19 @@ function quiz(){
 
     
     answer1b.addEventListener("click",function(){
-        clickedAnswers=[true,false,false,false];
         if(answers[i*4]==1){
             score++;
             feedback.textContent="Correct!";
         }else{
             secondsLeft=secondsLeft-10;
             feedback.textContent="Incorrect!";
+        }
+        if(secondsLeft <= 0) {
+            // Stops execution of action at set interval
+            content.textContent="Time's up!";
+            clearInterval(timerInterval);
+            // Calls function end game
+            endQuiz();
         }
         i++;
         question.textContent=questions[i];
@@ -91,6 +100,13 @@ function quiz(){
             secondsLeft=secondsLeft-10;
             feedback.textContent="Incorrect";
         }
+        if(secondsLeft <= 0) {
+            // Stops execution of action at set interval
+            clearInterval(timerInterval);
+            content.textContent="Time's up!";
+            // Calls function end game
+            endQuiz();
+        }
         i++;
         question.textContent=questions[i];
         answer1b.textContent=options[i*4];
@@ -108,6 +124,13 @@ function quiz(){
             secondsLeft=secondsLeft-10;
             feedback.textContent="Incorrect!";
         }
+        if(secondsLeft <= 0) {
+            // Stops execution of action at set interval
+            content.textContent="Time's up!";
+            clearInterval(timerInterval);
+            // Calls function end game
+            endQuiz();
+        }
         i++;
         question.textContent=questions[i];
         answer1b.textContent=options[i*4];
@@ -124,6 +147,13 @@ function quiz(){
         }else{
             secondsLeft=secondsLeft-10;
             feedback.textContent="Incorrect!";
+        }
+        if(secondsLeft <= 0) {
+            // Stops execution of action at set interval
+            content.textContent="Time's up!";
+            clearInterval(timerInterval);
+            // Calls function end game
+            endQuiz();
         }
         i++;
         question.textContent=questions[i];
@@ -148,32 +178,67 @@ function endQuiz(){
     initialsText.textContent="Enter your initials";
     sumbit.style.display="inline";
 
-    timer.textContent("");
+
+    timer.textContent="";
 }
 
+
+var highscores = [];
+
 function renderInitials() {
-    // TODO: Retrieve the last email and password and render it to the page
-    userEmailSpan.textContent=localStorage.getItem("myEmail");
-    userPasswordSpan.textContent=localStorage.getItem("myPassword");
-  }
+
+    highscoresList.innerHTML = ""; 
+    
+    highscores.sort( ({score:a}, {score:b}) => b-a );
+    console.log(highscores);
+    for (var i = 0; i < highscores.length; i++) {
+      var highscore = highscores[i];
+      
+      var li = document.createElement("li");
+      li.textContent = highscore.initials + " | " + highscore.score;
+      li.setAttribute("data-index", i);
   
-  signUpButton.addEventListener("click", function(event) {
-    event.preventDefault();
   
-    var email = document.querySelector("#email").value;
-    var password = document.querySelector("#password").value;
-  
-    if (email === "") {
-      displayMessage("error", "Email cannot be blank");
-    } else if (password === "") {
-      displayMessage("error", "Password cannot be blank");
-    } else {
-      displayMessage("success", "Registered successfully");
-  
-    localStorage.setItem("myEmail",email);
-    localStorage.setItem("myPassword",password);
-  
-    renderLastRegistered();
-  
+      highscoresList.appendChild(li);
     }
-  });
+  }
+
+ 
+  
+
+
+function init() {
+  var storedScores = JSON.parse(localStorage.getItem("highscores"));
+  console.log(storedScores);
+
+  if (storedScores !== null) {
+    highscores = storedScores;
+  }
+
+  renderInitials();
+}
+
+
+sumbit.addEventListener("click", function(event) {
+    var scoreText = initialsText.value.trim();
+    
+    var scores = {
+        initials: scoreText,
+        score: score
+    };
+
+    
+    if (scoreText === "") {
+        return;
+    }
+    
+    highscores.push(scores);
+    initialsText.value = "";
+    
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+  renderInitials();
+});
+
+
+
+init();
