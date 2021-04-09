@@ -10,7 +10,7 @@ var feedback = document.getElementById("feedback");
 var initialsText = document.getElementById("initials");
 var sumbit = document.getElementById("submit");
 var highscoresList = document.getElementById("highscoresList");
-var highscoresSection = document.getElementById("highscoresSections");
+var highscoresSection = document.getElementById("highscores");
 
 answer1b.style.display="none";
 answer2b.style.display="none";
@@ -18,6 +18,7 @@ answer3b.style.display="none";
 answer4b.style.display="none";
 initials.style.display="none";
 sumbit.style.display="none";
+highscoresSection.style.opacity=0;
 
 startButton.addEventListener("click",function(event){
     content.textContent="";
@@ -84,11 +85,16 @@ function quiz(){
             endQuiz();
         }
         i++;
-        question.textContent=questions[i];
-        answer1b.textContent=options[i*4];
-        answer2b.textContent=options[(i*4)+1];
-        answer3b.textContent=options[(i*4)+2];
-        answer4b.textContent=options[(i*4)+3];
+        if(i==questions.length){
+            clearInterval(timerInterval);
+            endQuiz();
+        }else{
+            question.textContent=questions[i];
+            answer1b.textContent=options[i*4];
+            answer2b.textContent=options[(i*4)+1];
+            answer3b.textContent=options[(i*4)+2];
+            answer4b.textContent=options[(i*4)+3];
+        }
     })
 
     answer2b.addEventListener("click",function(){
@@ -108,11 +114,16 @@ function quiz(){
             endQuiz();
         }
         i++;
-        question.textContent=questions[i];
-        answer1b.textContent=options[i*4];
-        answer2b.textContent=options[(i*4)+1];
-        answer3b.textContent=options[(i*4)+2];
-        answer4b.textContent=options[(i*4)+3];
+        if(i==questions.length){
+            clearInterval(timerInterval);
+            endQuiz();
+        }else{
+            question.textContent=questions[i];
+            answer1b.textContent=options[i*4];
+            answer2b.textContent=options[(i*4)+1];
+            answer3b.textContent=options[(i*4)+2];
+            answer4b.textContent=options[(i*4)+3];
+        }
     })
 
     answer3b.addEventListener("click",function(){
@@ -132,11 +143,16 @@ function quiz(){
             endQuiz();
         }
         i++;
-        question.textContent=questions[i];
-        answer1b.textContent=options[i*4];
-        answer2b.textContent=options[(i*4)+1];
-        answer3b.textContent=options[(i*4)+2];
-        answer4b.textContent=options[(i*4)+3];
+        if(i==questions.length){
+            clearInterval(timerInterval);
+            endQuiz();
+        }else{
+            question.textContent=questions[i];
+            answer1b.textContent=options[i*4];
+            answer2b.textContent=options[(i*4)+1];
+            answer3b.textContent=options[(i*4)+2];
+            answer4b.textContent=options[(i*4)+3];
+        }
     })
 
     answer4b.addEventListener("click",function(){
@@ -156,11 +172,16 @@ function quiz(){
             endQuiz();
         }
         i++;
-        question.textContent=questions[i];
-        answer1b.textContent=options[i*4];
-        answer2b.textContent=options[(i*4)+1];
-        answer3b.textContent=options[(i*4)+2];
-        answer4b.textContent=options[(i*4)+3];
+        if(i==questions.length){
+            clearInterval(timerInterval);
+            endQuiz();
+        }else{
+            question.textContent=questions[i];
+            answer1b.textContent=options[i*4];
+            answer2b.textContent=options[(i*4)+1];
+            answer3b.textContent=options[(i*4)+2];
+            answer4b.textContent=options[(i*4)+3];
+        }
     })
 
 }
@@ -177,8 +198,6 @@ function endQuiz(){
     initials.style.display="inline";
     initialsText.textContent="Enter your initials";
     sumbit.style.display="inline";
-
-
     timer.textContent="";
 }
 
@@ -190,7 +209,7 @@ function renderInitials() {
     highscoresList.innerHTML = ""; 
     
     highscores.sort( ({score:a}, {score:b}) => b-a );
-    console.log(highscores);
+
     for (var i = 0; i < highscores.length; i++) {
       var highscore = highscores[i];
       
@@ -221,6 +240,7 @@ function init() {
 
 sumbit.addEventListener("click", function(event) {
     var scoreText = initialsText.value.trim();
+    highscoresSection.style.opacity="100%";
     
     var scores = {
         initials: scoreText,
